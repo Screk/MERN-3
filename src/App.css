@@ -1,0 +1,32 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+header {
+  height: 15vh;
+}
+
+main {
+  height: 70vh;
+}
+
+.juegos{
+  display: flex;
+  gap: 3rem;
+}
+
+.NavLink {
+  font-size: 25px;
+}
+
+.NavLink:hover {
+  border-bottom: 2px solid #535bf2;
+}
+
+footer {
+  height: 5vh;
+}
+

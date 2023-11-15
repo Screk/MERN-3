@@ -1,0 +1,11 @@
+.incorrect {
+ background-color: red;
+}
+
+.correct {
+    background-color: green;
+}
+
+.letterToGuess {
+    color: #1a1a1a;
+}
