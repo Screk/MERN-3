@@ -1,5 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import sudoku, { makepuzzle, solvepuzzle } from 'sudoku';
 import './Sudoku.css';
+
+const SudokuCell = ({ value, selected, onClick }) => (
+  <td>
+    <button
+      className={`sudoku-cell ${selected ? 'active' : ''}`}
+      onClick={onClick}
+    >
+      {value === null ? '' : value}
+    </button>
+  </td>
+);
+
+const SudokuNumberButton = ({ number, onClick }) => (
+  <button onClick={onClick}>{number}</button>
+);
 
 const Sudoku = () => {
   const initialState = {
@@ -9,26 +25,17 @@ const Sudoku = () => {
 
   const [gameState, setGameState] = useState(initialState);
   const [sudokuBoard, setSudokuBoard] = useState(null);
-  const [board, setBoard] = useState([]);
+  const [permanentNumbers, setPermanentNumbers] = useState([]); // Nuevo estado para números permanentes
   const [numberActive, setNumberActive] = useState(false);
   const [selectedCell, setSelectedCell] = useState({ row: null, col: null });
   const [numberSelected, setNumberSelected] = useState('');
 
   useEffect(() => {
-    const newPuzzle = [
-      "--74916-5",
-      "2---6-3-9",
-      "-----7-1-",
-      "-586----4",
-      "--3----9-",
-      "--62--187",
-      "9-4-7---2",
-      "67-83----",
-      "81--45---",
-    ];
-
-    setSudokuBoard(newPuzzle);
-    setBoard(newPuzzle.map((row) => row.split('').map((cell) => (cell === '-' ? null : parseInt(cell)))));
+    // Generar un nuevo rompecabezas usando la biblioteca sudoku
+    const newPuzzle = sudoku.makepuzzle();
+    console.log(newPuzzle)
+    setSudokuBoard[newPuzzle];
+    setPermanentNumbers([]); // Inicializar el estado de los números permanentes
   }, []);
 
   const iniciarJuego = () => {
@@ -39,30 +46,36 @@ const Sudoku = () => {
   };
 
   const reiniciarJuego = () => {
-    const newPuzzle = board;
+    // Generar un nuevo rompecabezas al reiniciar el juego
+    const newPuzzle = sudoku.makepuzzle();
     setSudokuBoard(newPuzzle);
+    setPermanentNumbers([]);
     setGameState({
       ...initialState,
-      isStarted: false,
+      isStarted: true,
     });
   };
 
   const handleCellClick = (row, col) => {
     if (numberActive) {
+      const newBoard = [...sudokuBoard];
+      newBoard[row] = newBoard[row].split(''); // Convertir la fila en un array de caracteres
+      newBoard[row][col] = parseInt(numberSelected);
+
+      setSudokuBoard(newBoard);
+
+      // Agregar el número seleccionado a la lista de permanentNumbers
+      setPermanentNumbers([...permanentNumbers, { row, col, value: parseInt(numberSelected) }]);
+
       setSelectedCell({ row, col });
+      setNumberActive(false);
+      setNumberSelected('');
     }
   };
 
   const handleNumberClick = (i) => {
-    setNumberActive(!numberActive);
+    setNumberActive(true);
     setNumberSelected(i.toString());
-  };
-
-  const updateBoard = (row, col, value) => {
-    const newBoard = board.map((r, rowIndex) =>
-      r.map((cell, colIndex) => (rowIndex === row && colIndex === col ? value : cell))
-    );
-    setBoard(newBoard);
   };
 
   const renderBoard = () => {
@@ -72,16 +85,19 @@ const Sudoku = () => {
           <tbody>
             {sudokuBoard.map((row, rowIndex) => (
               <tr key={rowIndex}>
-                {row.split('').map((cell, colIndex) => (
-                  <td key={colIndex}>
-                    <button
-                      className={`sudoku-cell ${selectedCell.row === rowIndex && selectedCell.col === colIndex ? 'active' : ''}`}
+                {row !== null &&
+                  row.split('').map((cell, colIndex) => (
+                    <SudokuCell
+                      key={colIndex}
+                      value={cell === null ? (
+                        permanentNumbers.some(item => item.row === rowIndex && item.col === colIndex) ?
+                          permanentNumbers.find(item => item.row === rowIndex && item.col === colIndex).value :
+                          (selectedCell.row === rowIndex && selectedCell.col === colIndex ? numberSelected : null)
+                      ) : cell}
+                      selected={selectedCell.row === rowIndex && selectedCell.col === colIndex}
                       onClick={() => handleCellClick(rowIndex, colIndex)}
-                    >
-                      {cell === '-' ? (selectedCell.row === rowIndex && selectedCell.col === colIndex ? numberSelected : '') : cell}
-                    </button>
-                  </td>
-                ))}
+                    />
+                  ))}
               </tr>
             ))}
           </tbody>
@@ -90,14 +106,13 @@ const Sudoku = () => {
     }
     return null;
   };
+  
 
   const renderNumbers = () => {
     const numberButtons = [];
     for (let i = 1; i <= 9; i++) {
       numberButtons.push(
-        <button onClick={() => handleNumberClick(i)} key={i}>
-          {i}
-        </button>
+        <SudokuNumberButton key={i} number={i} onClick={() => handleNumberClick(i)} />
       );
     }
     return numberButtons;
