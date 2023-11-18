@@ -1,3 +1,10 @@
+
+.sudoku-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .sudoku-cell {
     height: 3rem;
     width: 3rem;

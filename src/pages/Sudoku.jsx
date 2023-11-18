@@ -2,21 +2,6 @@ import React, { useState, useEffect } from 'react';
 import sudoku, { makepuzzle, solvepuzzle } from 'sudoku';
 import './Sudoku.css';
 
-const SudokuCell = ({ value, selected, onClick }) => (
-  <td>
-    <button
-      className={`sudoku-cell ${selected ? 'active' : ''}`}
-      onClick={onClick}
-    >
-      {value === null ? '' : value}
-    </button>
-  </td>
-);
-
-const SudokuNumberButton = ({ number, onClick }) => (
-  <button onClick={onClick}>{number}</button>
-);
-
 const Sudoku = () => {
   const initialState = {
     isStarted: false,
@@ -25,17 +10,16 @@ const Sudoku = () => {
 
   const [gameState, setGameState] = useState(initialState);
   const [sudokuBoard, setSudokuBoard] = useState(null);
-  const [permanentNumbers, setPermanentNumbers] = useState([]); // Nuevo estado para números permanentes
-  const [numberActive, setNumberActive] = useState(false);
-  const [selectedCell, setSelectedCell] = useState({ row: null, col: null });
-  const [numberSelected, setNumberSelected] = useState('');
+  const [cellStates, setCellStates] = useState([]);
 
   useEffect(() => {
-    // Generar un nuevo rompecabezas usando la biblioteca sudoku
     const newPuzzle = sudoku.makepuzzle();
-    console.log(newPuzzle)
-    setSudokuBoard[newPuzzle];
-    setPermanentNumbers([]); // Inicializar el estado de los números permanentes
+    const newPuzzle2 = newPuzzle.map((number) => (number === null ? 0 : number));
+    setSudokuBoard(newPuzzle2);
+
+    // Inicializa el estado de las celdas
+    const initialCellStates = new Array(9).fill([]).map(() => new Array(9).fill(''));
+    setCellStates(initialCellStates);
   }, []);
 
   const iniciarJuego = () => {
@@ -46,77 +30,77 @@ const Sudoku = () => {
   };
 
   const reiniciarJuego = () => {
-    // Generar un nuevo rompecabezas al reiniciar el juego
     const newPuzzle = sudoku.makepuzzle();
     setSudokuBoard(newPuzzle);
-    setPermanentNumbers([]);
+
+    // Reinicia el estado de las celdas
+    const initialCellStates = new Array(9).fill([]).map(() => new Array(9).fill(''));
+    setCellStates(initialCellStates);
+
     setGameState({
       ...initialState,
       isStarted: true,
     });
   };
 
-  const handleCellClick = (row, col) => {
-    if (numberActive) {
-      const newBoard = [...sudokuBoard];
-      newBoard[row] = newBoard[row].split(''); // Convertir la fila en un array de caracteres
-      newBoard[row][col] = parseInt(numberSelected);
-
-      setSudokuBoard(newBoard);
-
-      // Agregar el número seleccionado a la lista de permanentNumbers
-      setPermanentNumbers([...permanentNumbers, { row, col, value: parseInt(numberSelected) }]);
-
-      setSelectedCell({ row, col });
-      setNumberActive(false);
-      setNumberSelected('');
-    }
+  const handleClick = (row, col, value) => {
+    // Actualiza el estado de la celda específica
+    const newCellStates = cellStates.map((r, rowIndex) =>
+      r.map((cell, colIndex) => (rowIndex === row && colIndex === col ? value : cell))
+    );
+    setCellStates(newCellStates);
   };
 
-  const handleNumberClick = (i) => {
-    setNumberActive(true);
-    setNumberSelected(i.toString());
+  const Board = () => {
+    const renderBoard = () => {
+      const rows = [];
+
+      for (let i = 0; i < 9; i++) {
+        const row = sudokuBoard.slice(i * 9, (i + 1) * 9);
+        rows.push(
+          <div key={i} className="sudoku-row">
+            {renderRow(row, i)}
+          </div>
+        );
+      }
+
+      return rows;
+    };
+
+    const renderRow = (row, rowIndex) => {
+      return row.map((number, colIndex) => (
+        <input
+          key={colIndex}
+          type="number"
+          className="sudoku-cell"
+          onChange={(e) => handleClick(rowIndex, colIndex, e.target.value)}
+          value={number ? number : (cellStates[rowIndex][colIndex]) }
+        />
+      ));
+    };
+
+    return <div className="sudoku-board">{renderBoard()}</div>;
   };
 
-  const renderBoard = () => {
-    if (sudokuBoard && sudokuBoard.length > 0) {
-      return (
-        <table className="sudoku-board">
-          <tbody>
-            {sudokuBoard.map((row, rowIndex) => (
-              <tr key={rowIndex}>
-                {row !== null &&
-                  row.split('').map((cell, colIndex) => (
-                    <SudokuCell
-                      key={colIndex}
-                      value={cell === null ? (
-                        permanentNumbers.some(item => item.row === rowIndex && item.col === colIndex) ?
-                          permanentNumbers.find(item => item.row === rowIndex && item.col === colIndex).value :
-                          (selectedCell.row === rowIndex && selectedCell.col === colIndex ? numberSelected : null)
-                      ) : cell}
-                      selected={selectedCell.row === rowIndex && selectedCell.col === colIndex}
-                      onClick={() => handleCellClick(rowIndex, colIndex)}
-                    />
-                  ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      );
+  const solution = () => {
+    if (sudokuBoard) {
+      // Clona el tablero actual para no modificar el estado directamente
+      const currentBoard = [...sudokuBoard];
+  
+      // Intenta resolver el tablero
+      const solved = solvepuzzle(currentBoard);
+  
+      if (solved) {
+        // Si se pudo resolver, actualiza el estado con la solución
+        setSudokuBoard(solved);
+      } else {
+        // Manejar el caso en que el tablero no tiene solución
+        console.error('El tablero no tiene solución.');
+        alert('El tablero no tiene solucion')
+      }
     }
-    return null;
   };
   
-
-  const renderNumbers = () => {
-    const numberButtons = [];
-    for (let i = 1; i <= 9; i++) {
-      numberButtons.push(
-        <SudokuNumberButton key={i} number={i} onClick={() => handleNumberClick(i)} />
-      );
-    }
-    return numberButtons;
-  };
 
   return (
     <>
@@ -126,8 +110,8 @@ const Sudoku = () => {
       {gameState.isStarted && (
         <div>
           <button onClick={reiniciarJuego}>Reiniciar juego</button>
-          {renderBoard()}
-          {renderNumbers()}
+          {Board()}
+          <button onClick={()=>solution()}>Solución</button>
         </div>
       )}
     </>
