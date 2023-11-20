@@ -10,6 +10,8 @@ const Sudoku = () => {
 
   const [gameState, setGameState] = useState(initialState);
   const [sudokuBoard, setSudokuBoard] = useState(null);
+  const [unsolvedSudokuboard, setUnsolvedSudokuboard] = useState(null)
+  const [solutionPulsed, setSolutionPulsed] = useState(false)
   const [cellStates, setCellStates] = useState([]);
 
   useEffect(() => {
@@ -83,7 +85,7 @@ const Sudoku = () => {
   };
 
   const solution = () => {
-    if (sudokuBoard) {
+    if (sudokuBoard && !solutionPulsed) {
       // Clona el tablero actual para no modificar el estado directamente
       const currentBoard = [...sudokuBoard];
   
@@ -92,7 +94,9 @@ const Sudoku = () => {
   
       if (solved) {
         // Si se pudo resolver, actualiza el estado con la solución
+        setUnsolvedSudokuboard(sudokuBoard);
         setSudokuBoard(solved);
+        setSolutionPulsed(true)
       } else {
         // Manejar el caso en que el tablero no tiene solución
         console.error('El tablero no tiene solución.');
@@ -100,18 +104,27 @@ const Sudoku = () => {
       }
     }
   };
+ console.log(unsolvedSudokuboard)
+ console.log(solutionPulsed)
+  const back = () => {
+    if (solutionPulsed) {
+      setSolutionPulsed(false)
+      setSudokuBoard(unsolvedSudokuboard)
+    }
+  }
   
 
   return (
     <>
       <div>
-        {!gameState.isStarted && <button onClick={iniciarJuego}>Iniciar Juego</button>}
+        {!gameState.isStarted && <button className='boton-iniciar' onClick={iniciarJuego}>Iniciar Juego</button>}
       </div>
       {gameState.isStarted && (
         <div>
-          <button onClick={reiniciarJuego}>Reiniciar juego</button>
+          <button className='boton-reiniciar' onClick={reiniciarJuego}>Reiniciar juego</button>
           {Board()}
-          <button onClick={()=>solution()}>Solución</button>
+          <button className='solution-button' onClick={()=>solution()}>Solución</button>
+          <button className='backButton' onClick={ back }>Volver al tablero</button>
         </div>
       )}
     </>

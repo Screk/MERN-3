@@ -114,7 +114,7 @@ const Hangman = () => {
         return <button className="correct" key={index}>{letter}</button>;
       } else {
         // La letra no ha sido adivinada, muestra un espacio en blanco
-        return <button key={index}>_</button>;
+        return <button className='letterToGuess' key={index}>_</button>;
       }
     });
 
@@ -174,12 +174,12 @@ const Hangman = () => {
   return (
     <div>
       <div>
-        {!gameState.isStarted && <button onClick={iniciarJuego}>Iniciar Juego</button>}
+        {!gameState.isStarted && <button className='boton-iniciar' onClick={iniciarJuego}>Iniciar Juego</button>}
       </div>
       {gameState.isStarted && (
-        <div>
+        <div className='game'>
           <h2>Hangman</h2>
-          <button onClick={reiniciarJuego}>Reiniciar</button>
+          <button className='boton-reiniciar' onClick={reiniciarJuego}>Reiniciar</button>
           <h3>Intentos restantes: {gameState.attemptsLeft}</h3>
           <h3>Palabra: 
            {renderWord()}

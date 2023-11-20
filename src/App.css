@@ -16,6 +16,8 @@ main {
 .juegos{
   display: flex;
   gap: 3rem;
+  align-items: center;
+  justify-content: center;
 }
 
 .NavLink {

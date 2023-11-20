@@ -1,3 +1,7 @@
+.game{
+    width: 60rem;
+}
+
 .incorrect {
  background-color: red;
 }
@@ -6,6 +10,27 @@
     background-color: green;
 }
 
+.letter {
+    height: 4rem;
+    width: 4rem;
+}
+
+.correct {
+    height: 4rem;
+    width: 4rem;
+}
+
 .letterToGuess {
-    color: #1a1a1a;
+    width: 4rem;
+    height: 4rem;
+}
+
+
+button {
+    width: 3rem;
+    height: 3rem;
+}
+
+.boton-reiniciar {
+    width: 10rem;
 }

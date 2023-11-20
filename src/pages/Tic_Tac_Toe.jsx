@@ -89,12 +89,12 @@ const TicTacToe = () => {
   return (
     <div>
       <div>
-        {!gameState.isStarted && <button onClick={iniciarJuego}>Iniciar Juego</button>}
+        {!gameState.isStarted && <button className='boton-iniciar' onClick={iniciarJuego}>Iniciar Juego</button>}
       </div>
       {gameState.isStarted && (
         <div>
           <h2>3 en Raya</h2>
-          <button onClick={reiniciarJuego}>Reiniciar Juego</button>
+          <button className='boton-reiniciar' onClick={reiniciarJuego}>Reiniciar Juego</button>
           <div className="status">{status}</div>
           <div className="board">
             <div className="board-row">
