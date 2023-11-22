@@ -32,3 +32,29 @@ footer {
   height: 5vh;
 }
 
+@media screen and (max-width: 800px) {
+  #root{
+    width:auto;
+    margin: 0;
+    margin-left: 1rem;
+  }
+
+  header {
+    width: 16rem;
+    height: 30vh;
+  }
+
+  main{
+    height: fit-content;
+  }
+
+  .juegos {
+    gap: 1.3rem;
+  }
+
+
+  .NavLink {
+    width: 3rem;
+    font-size: 12px;
+  }
+}

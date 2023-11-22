@@ -92,7 +92,7 @@ const TicTacToe = () => {
         {!gameState.isStarted && <button className='boton-iniciar' onClick={iniciarJuego}>Iniciar Juego</button>}
       </div>
       {gameState.isStarted && (
-        <div>
+        <div className='container'>
           <h2>3 en Raya</h2>
           <button className='boton-reiniciar' onClick={reiniciarJuego}>Reiniciar Juego</button>
           <div className="status">{status}</div>

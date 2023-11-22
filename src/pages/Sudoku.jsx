@@ -14,7 +14,9 @@ const Sudoku = () => {
   const [solutionPulsed, setSolutionPulsed] = useState(false)
   const [cellStates, setCellStates] = useState([]);
 
+
   useEffect(() => {
+  
     const newPuzzle = sudoku.makepuzzle();
     const newPuzzle2 = newPuzzle.map((number) => (number === null ? 0 : number));
     setSudokuBoard(newPuzzle2);

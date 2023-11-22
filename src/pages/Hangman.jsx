@@ -181,8 +181,8 @@ const Hangman = () => {
           <h2>Hangman</h2>
           <button className='boton-reiniciar' onClick={reiniciarJuego}>Reiniciar</button>
           <h3>Intentos restantes: {gameState.attemptsLeft}</h3>
-          <h3>Palabra: 
-           {renderWord()}
+          <h3 className='palabra'>Palabra: 
+           <div className='huecos'>{renderWord()}</div>
           </h3>
           <div>
             {renderLetter('A')}
