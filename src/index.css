@@ -63,12 +63,12 @@ button:hover {
   }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 600px) {
   :root{
-    width: fit-content;
+    width: 20rem;
   }
 
   body {
-    width: 20rem;
+    width: 24rem;
   }
 }

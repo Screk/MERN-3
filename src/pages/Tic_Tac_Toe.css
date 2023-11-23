@@ -26,10 +26,13 @@
 }
 
 @media only screen and (max-width: 600px) {
-    /* Estilos específicos para pantallas más pequeñas */
     .container {
-      width: 100%;
+      width: 18rem;
       height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    
     }
   
     .board {

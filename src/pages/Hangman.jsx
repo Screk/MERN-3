@@ -184,7 +184,7 @@ const Hangman = () => {
           <h3 className='palabra'>Palabra: 
            <div className='huecos'>{renderWord()}</div>
           </h3>
-          <div>
+          <div className='lettersGroup'>
             {renderLetter('A')}
             {renderLetter('B')}
             {renderLetter('C')}
@@ -197,7 +197,7 @@ const Hangman = () => {
             {renderLetter('J')}
             {renderLetter('K')}
           </div>
-          <div>
+          <div className='lettersGroup'>
             {renderLetter('L')}
             {renderLetter('M')}
             {renderLetter('N')}
@@ -210,7 +210,7 @@ const Hangman = () => {
             {renderLetter('T')}
             {renderLetter('U')}
           </div>
-          <div>
+          <div className='lettersGroup'>
             {renderLetter('V')}
             {renderLetter('W')}
             {renderLetter('X')}
