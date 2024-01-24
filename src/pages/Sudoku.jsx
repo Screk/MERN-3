@@ -124,7 +124,7 @@ const Sudoku = () => {
       <div>
         {!gameState.isStarted && 
         <div className='intro2'>
-          <img src="/public/images/sudoku.jpg" alt="" />
+          <img src="../images/sudoku.jpg" alt="" />
           <button className='boton-iniciar' onClick={iniciarJuego}>Iniciar Juego</button>
         </div>}
       </div>

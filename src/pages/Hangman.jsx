@@ -177,7 +177,7 @@ const Hangman = () => {
       <div>
         {!gameState.isStarted && 
         <div className='intro3'>
-          <img src="/public/images/ahorcado.jpg" alt="" />
+          <img src="../images/ahorcado.jpg" alt="" />
           <button className='boton-iniciar' onClick={iniciarJuego}>Iniciar Juego</button>
         </div>}
       </div>

@@ -92,7 +92,7 @@ const TicTacToe = () => {
         {!gameState.isStarted && ( 
         <div className='intro'> 
           <h2>3 En Raya</h2> 
-          <img src="/public/images/Tic_tac_toe.svg.png" alt="" />
+          <img src="../images/Tic_tac_toe.svg.png" alt="" />
           <button className='boton-iniciar' onClick={iniciarJuego}>Iniciar Juego</button>
         </div> 
         )}
