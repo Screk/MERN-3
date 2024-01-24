@@ -5,7 +5,7 @@ function App() {
 
   return (
     <>
-      <div>
+      <div className='bigDiv'>
         <header>
           <h1>Nuestros juegos</h1>
           <div className='juegos'>

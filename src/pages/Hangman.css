@@ -1,5 +1,14 @@
+.intro3 {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    align-items: center;
+}
 
-
+.intro3 > img {
+    height: 20rem;
+    width: 25rem;
+}
 .incorrect {
  background-color: red;
 }
@@ -61,6 +70,11 @@ button {
   }
   
   @media only screen and (max-width: 600px) {
+    .intro3 > img {
+        height: 20rem;
+        width: 80%;
+    }
+
     .game{
         width: 16rem;
     }

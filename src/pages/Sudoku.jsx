@@ -13,14 +13,16 @@ const Sudoku = () => {
   const [unsolvedSudokuboard, setUnsolvedSudokuboard] = useState(null)
   const [solutionPulsed, setSolutionPulsed] = useState(false)
   const [cellStates, setCellStates] = useState([]);
+  const [sudokuState, setSudokuState] = useState([]);
 
 
   useEffect(() => {
   
     const newPuzzle = sudoku.makepuzzle();
-    const newPuzzle2 = newPuzzle.map((number) => (number === null ? 0 : number));
+    const newPuzzle2 = newPuzzle.map((number) => (number === null ? null : number + 1));
     setSudokuBoard(newPuzzle2);
-
+    setSudokuState(newPuzzle);
+    console.log(newPuzzle2)
     // Inicializa el estado de las celdas
     const initialCellStates = new Array(9).fill([]).map(() => new Array(9).fill(''));
     setCellStates(initialCellStates);
@@ -35,8 +37,8 @@ const Sudoku = () => {
 
   const reiniciarJuego = () => {
     const newPuzzle = sudoku.makepuzzle();
-    setSudokuBoard(newPuzzle);
-
+    setSudokuBoard(newPuzzle.map((number) => (number === null ? null : number + 1 )));
+    setSudokuState(newPuzzle);
     // Reinicia el estado de las celdas
     const initialCellStates = new Array(9).fill([]).map(() => new Array(9).fill(''));
     setCellStates(initialCellStates);
@@ -89,7 +91,7 @@ const Sudoku = () => {
   const solution = () => {
     if (sudokuBoard && !solutionPulsed) {
       // Clona el tablero actual para no modificar el estado directamente
-      const currentBoard = [...sudokuBoard];
+      const currentBoard = [...sudokuState];
   
       // Intenta resolver el tablero
       const solved = solvepuzzle(currentBoard);
@@ -97,8 +99,9 @@ const Sudoku = () => {
       if (solved) {
         // Si se pudo resolver, actualiza el estado con la solución
         setUnsolvedSudokuboard(sudokuBoard);
-        setSudokuBoard(solved);
+        setSudokuBoard(solved.map((el) => el + 1));
         setSolutionPulsed(true)
+
       } else {
         // Manejar el caso en que el tablero no tiene solución
         console.error('El tablero no tiene solución.');
@@ -106,20 +109,24 @@ const Sudoku = () => {
       }
     }
   };
- console.log(unsolvedSudokuboard)
- console.log(solutionPulsed)
+
   const back = () => {
     if (solutionPulsed) {
       setSolutionPulsed(false)
       setSudokuBoard(unsolvedSudokuboard)
     }
   }
+
   
 
   return (
     <>
       <div>
-        {!gameState.isStarted && <button className='boton-iniciar' onClick={iniciarJuego}>Iniciar Juego</button>}
+        {!gameState.isStarted && 
+        <div className='intro2'>
+          <img src="/public/images/sudoku.jpg" alt="" />
+          <button className='boton-iniciar' onClick={iniciarJuego}>Iniciar Juego</button>
+        </div>}
       </div>
       {gameState.isStarted && (
         <div>

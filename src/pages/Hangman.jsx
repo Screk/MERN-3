@@ -134,6 +134,7 @@ const Hangman = () => {
         <div>
           {displayedWord}
           <p>¡Has perdido!</p>
+          <p>La palabra era: {gameState.wordToGuess} </p>
         </div>
       )
     }
@@ -174,7 +175,11 @@ const Hangman = () => {
   return (
     <div>
       <div>
-        {!gameState.isStarted && <button className='boton-iniciar' onClick={iniciarJuego}>Iniciar Juego</button>}
+        {!gameState.isStarted && 
+        <div className='intro3'>
+          <img src="/public/images/ahorcado.jpg" alt="" />
+          <button className='boton-iniciar' onClick={iniciarJuego}>Iniciar Juego</button>
+        </div>}
       </div>
       {gameState.isStarted && (
         <div className='game'>

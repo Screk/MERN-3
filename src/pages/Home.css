@@ -1,0 +1,16 @@
+article {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+section{
+    display: flex;
+    align-items: center;
+}
+
+img {
+    height: 150px;
+    margin-right: 2rem;
+    width: 200px;
+}

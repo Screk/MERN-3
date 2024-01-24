@@ -1,12 +1,21 @@
 #root {
-  max-width: 1280px;
+  width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
 }
 
+.bigDiv{
+  display: flex ;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 header {
-  height: 15vh;
+  height: 19vh;
+  width: 100%;
+  margin-bottom: 3rem;
+  background-color: #084B83;
 }
 
 main {
@@ -22,14 +31,11 @@ main {
 
 .NavLink {
   font-size: 25px;
-}
-
-.NavLink:hover {
-  border-bottom: 2px solid #535bf2;
+  color: white;
 }
 
 footer {
-  height: 5vh;
+  height: 3vh;
 }
 
 @media screen and (max-width: 800px) {
@@ -39,9 +45,9 @@ footer {
     margin-left: 1rem;
   }
 
-  header {
-    width: 16rem;
-    height: 30vh;
+  header{
+    width: 100%;
+    height: 27vh;
   }
 
   main{
@@ -49,12 +55,12 @@ footer {
   }
 
   .juegos {
-    gap: 1.3rem;
+    gap: 2.5rem;
   }
 
 
   .NavLink {
     width: 3rem;
-    font-size: 12px;
+    font-size: 17px;
   }
 }
